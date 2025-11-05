@@ -40,7 +40,7 @@ export const segmentPerson = async (imageBase64, threshold = 0.3) => {
     // Remove data URL prefix if present
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/segment', {
+    const response = await api.post('/api/segment', {
       imageBase64: base64Data,
       method: 'auto',
       threshold: threshold,
@@ -58,7 +58,7 @@ export const refineMask = async (imageBase64, maskBase64, fgStrokes, bgStrokes) 
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     const maskData = maskBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/refine-mask', {
+    const response = await api.post('/api/refine-mask', {
       imageBase64: base64Data,
       maskBase64: maskData,
       fgStrokesBase64: fgStrokes ? fgStrokes.replace(/^data:image\/\w+;base64,/, '') : null,
@@ -89,7 +89,7 @@ export const removeBackground = async (imageBase64, maskBase64, options = {}) =>
     }
     if (options.gradient) requestData.gradient = options.gradient;
     
-    const response = await api.post('/remove-bg', requestData);
+    const response = await api.post('/api/remove-bg', requestData);
     
     return response.data;
   } catch (error) {
@@ -140,7 +140,7 @@ export const placeTextBehind = async (imageBase64, maskBase64, textOptions) => {
     }
     if (textOptions.maxWidth) requestData.maxWidth = textOptions.maxWidth;
     
-    const response = await api.post('/place-text-behind', requestData);
+    const response = await api.post('/api/place-text-behind', requestData);
     
     return response.data;
   } catch (error) {
@@ -153,7 +153,7 @@ export const advancedProcess = async (imageBase64, operations) => {
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/advanced-process', {
+    const response = await api.post('/api/advanced-process', {
       imageBase64: base64Data,
       ops: operations,
     });
@@ -183,7 +183,7 @@ export const upscaleImage = async (imageBase64, scaleFactor = 2.0, method = 'bic
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/upscale', {
+    const response = await api.post('/api/upscale', {
       imageBase64: base64Data,
       scaleFactor: scaleFactor,
       method: method, // bicubic, lanczos, super_resolution
@@ -201,7 +201,7 @@ export const removeObject = async (imageBase64, maskBase64, method = 'telea') =>
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     const maskData = maskBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/remove-object', {
+    const response = await api.post('/api/remove-object', {
       imageBase64: base64Data,
       maskBase64: maskData,
       method: method, // telea or navier_stokes
@@ -227,7 +227,7 @@ export const removeWatermark = async (imageBase64, maskBase64 = null, autoDetect
       requestData.maskBase64 = maskBase64.replace(/^data:image\/\w+;base64,/, '');
     }
     
-    const response = await api.post('/remove-watermark', requestData);
+    const response = await api.post('/api/remove-watermark', requestData);
     
     return response.data;
   } catch (error) {
@@ -236,11 +236,11 @@ export const removeWatermark = async (imageBase64, maskBase64 = null, autoDetect
   }
 };
 
-export const smartEnhance = async (imageBase64, options = {}) => {
+export const smartEnhance = async (imageBase64, strength = 0.5) => {
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/smart-enhance', {
+    const response = await api.post('/api/smart-enhance', {
       imageBase64: base64Data,
       denoise: options.denoise !== undefined ? options.denoise : true,
       sharpen: options.sharpen !== undefined ? options.sharpen : true,
@@ -258,7 +258,7 @@ export const reduceNoise = async (imageBase64, strength = 10, method = 'nlm') =>
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/reduce-noise', {
+    const response = await api.post('/api/reduce-noise', {
       imageBase64: base64Data,
       strength: strength, // 1-30
       method: method, // nlm, bilateral, gaussian
@@ -275,7 +275,7 @@ export const autoExposure = async (imageBase64, clipLimit = 2.0) => {
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/auto-exposure', {
+    const response = await api.post('/api/auto-exposure', {
       imageBase64: base64Data,
       clipLimit: clipLimit, // 1.0-4.0
     });
@@ -287,11 +287,11 @@ export const autoExposure = async (imageBase64, clipLimit = 2.0) => {
   }
 };
 
-export const perspectiveCorrection = async (imageBase64, corners) => {
+export const perspectiveCorrection = async (imageBase64, points) => {
   try {
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
     
-    const response = await api.post('/perspective-correction', {
+    const response = await api.post('/api/perspective-correction', {
       imageBase64: base64Data,
       corners: corners, // [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]
     });
