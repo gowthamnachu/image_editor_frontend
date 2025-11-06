@@ -242,9 +242,7 @@ export const smartEnhance = async (imageBase64, strength = 0.5) => {
     
     const response = await api.post('/api/smart-enhance', {
       imageBase64: base64Data,
-      denoise: options.denoise !== undefined ? options.denoise : true,
-      sharpen: options.sharpen !== undefined ? options.sharpen : true,
-      colorBalance: options.colorBalance !== undefined ? options.colorBalance : true,
+      strength: strength,
     });
     
     return response.data;
